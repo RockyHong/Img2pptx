@@ -1,0 +1,206 @@
+<!--
+index.html
+
+This is the simple front-end form for uploading a .zip of images
+and specifying how to fit those images into PPTX slides.
+
+HOW IT WORKS:
+1. The user sets slide width/height (pixels) in Step 1.
+2. The user chooses a scaling 'fit_mode' (fit_width, fit_height, fill, letterbox).
+3. The user drags or selects a .zip file of images in Step 3.
+4. Clicking "Convert to PPTX" triggers the POST request to app.py
+5. app.py then returns a file download of the PowerPoint.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>img2pptx - by Rocky Hong</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: #333;
+        }
+
+        .header-banner {
+            background: #000;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #fff;
+        }
+
+        .header-banner h1 span {
+            font-size: 0.5em;
+            margin-left: 10px;
+            color: #ccc;
+        }
+
+        .container {
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .drop-area {
+            margin-top: 20px;
+            border: 2px dashed #999;
+            border-radius: 10px;
+            text-align: center;
+            padding: 40px 20px;
+            cursor: pointer;
+            position: relative;
+            color: #666;
+        }
+
+        .drop-area:hover {
+            border-color: #333;
+            color: #333;
+        }
+
+        .drop-area input[type="file"] {
+            display: none;
+        }
+
+        #uploaded_file_name {
+            font-style: italic;
+            margin-top: 10px;
+            color: #333;
+            display: none;
+        }
+
+        .big-button {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: #28a745;
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .big-button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-banner">
+        <h1>🪄 img2pptx <span>- by Rocky Hong</span></h1>
+    </div>
+    <div class="container">
+        <!-- We POST to "/" which is handled by our Flask app in app.py -->
+        <form method="post" action="/" enctype="multipart/form-data">
+            <!-- Step 1: Choose Dimensions -->
+            <h2><span class="emoji">🖥️</span> Step 1: Set Your Slide Dimensions</h2>
+            <div>
+                <label for="slide_width_px">Slide Width (px):</label>
+                <input name="slide_width_px" id="slide_width_px" type="number" value="1920" required />
+            </div>
+            <div>
+                <label for="slide_height_px">Slide Height (px):</label>
+                <input name="slide_height_px" id="slide_height_px" type="number" value="1080" required />
+            </div>
+
+            <!-- Step 2: Define Fit Mode -->
+            <h2><span class="emoji">🎚️</span> Step 2: Define Fit Mode</h2>
+            <label for="fit_mode_select">Scaling Method:</label>
+            <select name="fit_mode" id="fit_mode_select">
+                <option value="fit_width">Fit Width</option>
+                <option value="fit_height">Fit Height</option>
+                <option value="letterbox">Letterbox</option>
+                <option value="fill">Fill</option>
+            </select>
+
+            <!-- Step 3: Upload -->
+            <h2><span class="emoji">📦</span> Step 3: Upload</h2>
+            <div class="drop-area" id="drop_area">
+                <p id="drop_area_text">
+                    <strong>Drag & Drop</strong> your .zip file here<br>
+                    or <strong>click</strong> to select a file
+                </p>
+                <input name="images_zip" id="images_zip" type="file" accept=".zip" required />
+                <p id="uploaded_file_name"></p>
+            </div>
+
+            <!-- Step 4: Convert -->
+            <h2><span class="emoji">🎉</span> Step 4: Convert</h2>
+            <button type="submit" class="big-button">🚀 Convert to PPTX</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript for drag & drop behavior
+        const dropArea = document.getElementById('drop_area');
+        const fileInput = document.getElementById('images_zip');
+        const uploadedFileName = document.getElementById('uploaded_file_name');
+
+        // Show the file name after it's selected
+        function showFileName(file) {
+            uploadedFileName.textContent = `✅ Selected File: ${file.name}`;
+            uploadedFileName.style.display = 'block';
+        }
+
+        // 1) Clicking the drop area triggers file input
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // 2) Drag over highlight
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#333';
+        });
+
+        // 3) Drag leave
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#999';
+        });
+
+        // 4) On drop
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#999';
+
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.zip')) {
+                // Assign the dropped file to our input
+                fileInput.files = e.dataTransfer.files;
+                showFileName(file);
+            } else {
+                alert('❌ Please upload a valid .zip file.');
+            }
+        });
+
+        // 5) On file input change
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                showFileName(file);
+            }
+        });
+    </script>
+</body>
+
+</html>
