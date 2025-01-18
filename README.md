@@ -1,7 +1,3 @@
-Below is an updated **README.md** file with **instant readability** and the **runtime URL** included.
-
----
-
 # img2pptx
 
 A **Flask** web app that converts a folder of images (zipped) into a PowerPoint slideshow.  
@@ -66,6 +62,4 @@ This project is a **practice** solution to streamline your workflow from **Canva
 - **fill**: Stretches the image to fill the entire slide (ignores aspect ratio).
 - **letterbox**: Fits the image within both width and height, preserving aspect ratio (no cropping).
 
----
-
-**Happy converting!**
+# 🥳 **Happy converting!**
