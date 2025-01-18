@@ -1,3 +1,5 @@
+![img2pptx](./assets/social-thumbnail.jpg)
+
 # img2pptx
 
 A **Flask** web app that converts a folder of images (zipped) into a PowerPoint slideshow.  
