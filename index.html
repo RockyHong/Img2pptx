@@ -15,10 +15,32 @@ HOW IT WORKS:
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head>      
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>img2pptx - by Rocky Hong</title>
+    <!-- Links a favicon (small icon shown in browser tabs) -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+
+    <title>img2pptx</title>
+
+    <!-- SEO metadata: Helps search engines understand the page content -->
+    <meta name="description" content="Quickly convert & fit your images into slides.">
+    <meta name="keywords" content="image to PPT, PPTX converter, slideshow, presentations, online converter, fast conversion, free tool, quick PPT creation">
+    <meta name="author" content="Rocky Hong">
+
+    <!-- Social Media Thumbnails: Define how the page will appear when shared on social media -->
+    <meta property="og:title" content="img2pptx - Instant Image-to-PowerPoint Conversion">
+    <meta property="og:description" content="Quickly convert & fit your images into slides.">
+    <meta property="og:image" content="assets/images/social-thumbnail.jpg">
+    <meta property="og:url" content="https://img2pptx.rockyhong.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Metadata: Specifically for customizing how links look on Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="img2pptx - Instant Image-to-PowerPoint Conversion">
+    <meta name="twitter:description" content="Quickly convert & fit your images into slides.">
+    <meta name="twitter:image" content="assets/images/social-thumbnail.jpg">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -107,13 +129,13 @@ HOW IT WORKS:
 
 <body>
     <div class="header-banner">
-        <h1>🪄 img2pptx <span>- by Rocky Hong</span></h1>
+        <h1>img2pptx <span>- by <a href="https://rockyhong.com" target="_blank" rel="noopener noreferrer">Rocky Hong</a></span></h1>
     </div>
     <div class="container">
         <!-- We POST to "/" which is handled by our Flask app in app.py -->
         <form method="post" action="/" enctype="multipart/form-data">
             <!-- Step 1: Choose Dimensions -->
-            <h2><span class="emoji">🖥️</span> Step 1: Set Your Slide Dimensions</h2>
+            <h2><span class="emoji">🖥️</span> Step 1: Set Resolution</h2>
             <div>
                 <label for="slide_width_px">Slide Width (px):</label>
                 <input name="slide_width_px" id="slide_width_px" type="number" value="1920" required />
@@ -124,7 +146,7 @@ HOW IT WORKS:
             </div>
 
             <!-- Step 2: Define Fit Mode -->
-            <h2><span class="emoji">🎚️</span> Step 2: Define Fit Mode</h2>
+            <h2><span class="emoji">🎚️</span> Step 2: Choose Fit Mode</h2>
             <label for="fit_mode_select">Scaling Method:</label>
             <select name="fit_mode" id="fit_mode_select">
                 <option value="fit_width">Fit Width</option>
@@ -134,7 +156,9 @@ HOW IT WORKS:
             </select>
 
             <!-- Step 3: Upload -->
-            <h2><span class="emoji">📦</span> Step 3: Upload</h2>
+            <h2><span class="emoji">📦</span> Step 3: Upload Your Images</h2>
+            <p>Place all your pictures in a .zip file. The slides will be ordered based on the file names.</p>
+            <p><i>(If you're using Canva, simply download as pictures and upload the .zip file directly here.)</i></p>
             <div class="drop-area" id="drop_area">
                 <p id="drop_area_text">
                     <strong>Drag & Drop</strong> your .zip file here<br>
@@ -145,8 +169,8 @@ HOW IT WORKS:
             </div>
 
             <!-- Step 4: Convert -->
-            <h2><span class="emoji">🎉</span> Step 4: Convert</h2>
-            <button type="submit" class="big-button">🚀 Convert to PPTX</button>
+            <h2><span class="emoji">🎉</span> Step 4: Convert to Slides</h2>
+            <button type="submit" class="big-button">🚀 Convert</button>
         </form>
     </div>
 
