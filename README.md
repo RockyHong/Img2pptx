@@ -26,7 +26,7 @@ This project is a **practice** solution to streamline your workflow from **Canva
 1. **Clone the Repo**
 
    ```
-   git clone https://github.com/your-username/img2pptx.git
+   git clone https://github.com/RockyHong/Img2pptx.git
    cd img2pptx
    ```
 
